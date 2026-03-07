@@ -1,8 +1,14 @@
+import uuid
 from datetime import datetime
 
 from uuid_utils import uuid7
 
-from sqlalchemy import String, DateTime, Enum, Uuid
+
+def generate_uuid7() -> uuid.UUID:
+    """Generate a UUID v7 and return it as a standard uuid.UUID for psycopg2 compatibility."""
+    return uuid.UUID(str(uuid7()))
+
+from sqlalchemy import Integer, String, DateTime, Enum, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 import enum
@@ -20,7 +26,7 @@ class LeagueStatus(enum.Enum):
 class League(Base):
     __tablename__ = "league"
 
-    id: Mapped[uuid7] = mapped_column(Uuid, primary_key=True, default=uuid7)
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=generate_uuid7)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     status: Mapped[LeagueStatus] = mapped_column(
         Enum(LeagueStatus), nullable=False, default=LeagueStatus.OPEN
