@@ -24,13 +24,17 @@ Core backend service for the **Counter-Strike Fantasy** application. Built with 
 csf-core/
 ├── app/
 │   ├── api/            # FastAPI route handlers (controllers)
-│   │   └── leagues.py
+│   │   ├── leagues.py
+│   │   └── users.py
 │   ├── models/         # SQLAlchemy ORM models
-│   │   └── league.py
+│   │   ├── league.py
+│   │   └── user.py
 │   ├── schemas/        # Pydantic request/response schemas (DTOs)
-│   │   └── league.py
+│   │   ├── league.py
+│   │   └── user.py
 │   ├── services/       # Business logic layer
-│   │   └── league_service.py
+│   │   ├── league_service.py
+│   │   └── user_service.py
 │   ├── db/             # Database session & connection config
 │   │   ├── base.py
 │   │   └── session.py
@@ -39,7 +43,8 @@ csf-core/
 ├── alembic/            # Database migrations
 ├── tests/              # Test suite
 │   ├── conftest.py     # Test fixtures & DB setup
-│   └── test_leagues.py
+│   ├── test_leagues.py
+│   └── test_users.py
 ├── requirements.txt
 └── README.md
 ```
@@ -48,14 +53,19 @@ csf-core/
 
 ## API Endpoints
 
-| Method   | Endpoint              | Description         |
-|----------|-----------------------|---------------------|
-| `GET`    | `/health`             | Health check        |
-| `POST`   | `/leagues/`           | Create a league     |
-| `GET`    | `/leagues/`           | List all leagues    |
-| `GET`    | `/leagues/{id}`       | Get a league by ID  |
-| `PATCH`  | `/leagues/{id}`       | Update a league     |
-| `DELETE` | `/leagues/{id}`       | Delete a league     |
+| Method   | Endpoint              | Description            |
+|----------|-----------------------|------------------------|
+| `GET`    | `/health`             | Health check           |
+| `POST`   | `/leagues/`           | Create a league        |
+| `GET`    | `/leagues/`           | List all leagues       |
+| `GET`    | `/leagues/{id}`       | Get a league by ID     |
+| `PATCH`  | `/leagues/{id}`       | Update a league        |
+| `DELETE` | `/leagues/{id}`       | Delete a league        |
+| `POST`   | `/users/`            | Create a user          |
+| `GET`    | `/users/`            | List all users         |
+| `GET`    | `/users/{id}`        | Get a user by ID       |
+| `PATCH`  | `/users/{id}`        | Update user profile    |
+| `DELETE` | `/users/{id}`        | Deactivate a user      |
 
 ---
 

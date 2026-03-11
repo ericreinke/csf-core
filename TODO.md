@@ -1,12 +1,11 @@
 # TODO
 
-## In Progress
-- [ ] Fix Pydantic deprecation warning (switch `class Config` to `model_config = ConfigDict(...)`)
-
 ## Models & CRUD
+- [x] League model + CRUD API
+- [x] User model + CRUD API (Google-only auth)
+- [x] Link League owner → User (ForeignKey)
 - [ ] Team model + CRUD API
 - [ ] Player model + CRUD API (link to csf-scraper player data via steam_id)
-- [ ] User/Account model + CRUD API
 
 ## League Features
 - [ ] League join/leave flow (team registration)
@@ -32,9 +31,13 @@
 - [ ] Standings/leaderboard
 
 ## Infrastructure
-- [ ] Authentication (JWT or session-based)
+- [ ] Google OAuth authentication flow
+- [ ] JWT token generation & validation
 - [ ] CORS configuration
 - [ ] Environment-based config (dev/staging/prod)
 - [ ] Docker setup
 - [ ] CI/CD pipeline
 - [ ] Logging and error handling middleware
+
+## Cleanup
+- [ ] Fix Pydantic deprecation warning (`class Config` → `model_config = ConfigDict(...)`)

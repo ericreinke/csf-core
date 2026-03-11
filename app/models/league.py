@@ -8,8 +8,8 @@ def generate_uuid7() -> uuid.UUID:
     """Generate a UUID v7 and return it as a standard uuid.UUID for psycopg2 compatibility."""
     return uuid.UUID(str(uuid7()))
 
-from sqlalchemy import Integer, String, DateTime, Enum, Uuid
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Integer, String, DateTime, Enum, ForeignKey, Uuid
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 import enum
 
@@ -32,7 +32,8 @@ class League(Base):
         Enum(LeagueStatus), nullable=False, default=LeagueStatus.OPEN
     )
     description: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    owner: Mapped[str] = mapped_column(String(100), nullable=False)
+    owner_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("user.id"), nullable=False)
+    owner: Mapped["User"] = relationship("User")
     max_teams: Mapped[int] = mapped_column(nullable=False, default=8)
     start_time: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     league_length: Mapped[int | None] = mapped_column(Integer, nullable=True)

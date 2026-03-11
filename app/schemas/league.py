@@ -10,7 +10,7 @@ class LeagueCreate(BaseModel):
     """Request body for creating a league. Only includes fields the client provides."""
     name: str
     description: str | None = None
-    owner: str
+    owner_id: UUID
     max_teams: int = 8
     start_time: datetime | None = None
     league_length: int | None = None
@@ -34,7 +34,7 @@ class LeagueResponse(BaseModel):
     name: str
     status: LeagueStatus
     description: str | None
-    owner: str
+    owner_id: UUID
     max_teams: int
     start_time: datetime | None
     league_length: int | None

@@ -18,6 +18,7 @@ if config.config_file_name is not None:
 # Each new model file must be imported here.
 from app.db.base import Base  # noqa
 from app.models.league import League  # noqa
+from app.models.user import User  # noqa
 from app.config import settings
 
 # Point Alembic at our model metadata (the registry of all tables)
