@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api import leagues, users
+from app.api import leagues, users, teams
 
 app = FastAPI(
     title="CSF Core",
@@ -10,6 +10,7 @@ app = FastAPI(
 
 app.include_router(leagues.router)
 app.include_router(users.router)
+app.include_router(teams.router)
 
 
 @app.get("/health")

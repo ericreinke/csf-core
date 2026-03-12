@@ -4,7 +4,7 @@
 - [x] League model + CRUD API
 - [x] User model + CRUD API (Google-only auth)
 - [x] Link League owner → User (ForeignKey)
-- [ ] Team model + CRUD API
+- [x] Team model + CRUD API
 - [ ] Player model + CRUD API (link to csf-scraper player data via steam_id)
 
 ## League Features
