@@ -6,8 +6,10 @@ from app.models.roster import Roster
 from app.schemas.roster import RosterCreate, RosterUpdate
 
 
-def create_roster(db: Session, roster_data: RosterCreate) -> Roster:
-    roster = Roster(**roster_data.model_dump())
+def create_roster(db: Session, pool_id: UUID, roster_data: RosterCreate) -> Roster:
+    db_obj_data = roster_data.model_dump(exclude_unset=True)
+    db_obj_data["pool_id"] = pool_id
+    roster = Roster(**db_obj_data)
     db.add(roster)
     db.commit()
     db.refresh(roster)
@@ -18,12 +20,8 @@ def get_roster(db: Session, roster_id: UUID) -> Roster | None:
     return db.query(Roster).filter(Roster.id == roster_id).first()
 
 
-def get_rosters(db: Session, skip: int = 0, limit: int = 20) -> list[Roster]:
-    return db.query(Roster).offset(skip).limit(limit).all()
-
-
-def get_rosters_by_league(db: Session, league_id: UUID, skip: int = 0, limit: int = 20) -> list[Roster]:
-    return db.query(Roster).filter(Roster.league_id == league_id).offset(skip).limit(limit).all()
+def get_rosters_by_pool(db: Session, pool_id: UUID, skip: int = 0, limit: int = 20) -> list[Roster]:
+    return db.query(Roster).filter(Roster.pool_id == pool_id).offset(skip).limit(limit).all()
 
 
 def update_roster(db: Session, roster_id: UUID, roster_data: RosterUpdate) -> Roster | None:
@@ -31,7 +29,6 @@ def update_roster(db: Session, roster_id: UUID, roster_data: RosterUpdate) -> Ro
     if not roster:
         return None
 
-    # Only update fields that were explicitly provided
     for field, value in roster_data.model_dump(exclude_unset=True).items():
         setattr(roster, field, value)
 

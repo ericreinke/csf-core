@@ -26,7 +26,6 @@ def test_create_league(client, db):
     assert data["name"] == "Season 1"
     assert data["owner_id"] == str(account.id)
     assert data["status"] == "open"
-    assert data["max_teams"] == 8
     assert data["id"] is not None
 
 
@@ -69,11 +68,9 @@ def test_update_league(client, db):
 
     response = client.patch(f"/leagues/{league_id}", json={
         "name": "Season 1 - Updated",
-        "max_teams": 10,
     })
     assert response.status_code == 200
     assert response.json()["name"] == "Season 1 - Updated"
-    assert response.json()["max_teams"] == 10
     # owner should be unchanged
     assert response.json()["owner_id"] == str(account.id)
 

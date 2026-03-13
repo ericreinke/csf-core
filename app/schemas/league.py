@@ -11,7 +11,6 @@ class LeagueCreate(BaseModel):
     name: str
     description: str | None = None
     owner_id: UUID
-    max_teams: int = 8
     start_time: datetime | None = None
     league_length: int | None = None
     prize_description: str | None = None
@@ -22,7 +21,6 @@ class LeagueUpdate(BaseModel):
     name: str | None = None
     description: str | None = None
     status: LeagueStatus | None = None
-    max_teams: int | None = None
     start_time: datetime | None = None
     league_length: int | None = None
     prize_description: str | None = None
@@ -35,7 +33,6 @@ class LeagueResponse(BaseModel):
     status: LeagueStatus
     description: str | None
     owner_id: UUID
-    max_teams: int
     start_time: datetime | None
     league_length: int | None
     prize_description: str | None

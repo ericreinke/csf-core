@@ -15,8 +15,12 @@ class Roster(Base):
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=generate_uuid7)
     name: Mapped[str] = mapped_column(String(100), nullable=False)
     tag: Mapped[str | None] = mapped_column(String(10), nullable=True)
-    league_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("league.id"), nullable=False)
-    league: Mapped["League"] = relationship("League")
+    
+    pool_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("league_pool.uuid", ondelete="CASCADE"), nullable=False)
+    pool: Mapped["LeaguePool"] = relationship("LeaguePool", back_populates="rosters")
+    
+    registration_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("league_registration.uuid"), nullable=False)
+
     owner_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("account.id"), nullable=False)
     owner: Mapped["Account"] = relationship("Account")
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())

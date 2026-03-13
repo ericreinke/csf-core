@@ -27,6 +27,12 @@ Core backend service for the **Counter-Strike Fantasy** application. Built with 
 - **`csf-scraper` is the Worker:**
   The scraper functions as an asynchronous data pipeline. It fetches HLTV matches, parses CS2 demos, and executes `INSERT / UPDATE` queries directly against the tables created by `csf-core`. It simply treats the database as an API it writes to.
 
+## 🔄 Core Flow: Joining a League
+The backend enforces a strict logical pipeline to prevent empty teams and manage scale:
+1. **Registration (`LeagueRegistration`):** An `Account` signs up for a `League`. This acts as a waitlist.
+2. **Assignment (`LeaguePool`):** Once registration closes, the backend subdivides registered users into competitive pools of 10.
+3. **Drafting (`Roster`):** Users draft their pro players. A `Roster` is created strictly within the context of their assigned `LeaguePool`.
+
 ---
 
 ## 📂 Project Structure
@@ -35,30 +41,38 @@ Core backend service for the **Counter-Strike Fantasy** application. Built with 
 csf-core/
 ├── app/
 │   ├── api/            # FastAPI route handlers (controllers)
-│   │   ├── leagues.py
-│   │   ├── rosters.py
 │   │   ├── accounts.py
-│   │   └── players.py
+│   │   ├── league_pools.py
+│   │   ├── league_registrations.py
+│   │   ├── leagues.py
+│   │   ├── players.py
+│   │   └── rosters.py
 │   ├── models/         # SQLAlchemy ORM models (Source of Truth)
-│   │   ├── league.py
-│   │   ├── roster.py
 │   │   ├── account.py
-│   │   ├── team.py
-│   │   ├── player.py
-│   │   ├── tournament.py
-│   │   ├── match.py
+│   │   ├── game_stats.py
+│   │   ├── league.py
+│   │   ├── league_pool.py
+│   │   ├── league_registration.py
 │   │   ├── map.py
-│   │   └── game_stats.py
-│   ├── schemas/        # Pydantic request/response schemas (DTOs)
-│   │   ├── league.py
+│   │   ├── match.py
+│   │   ├── player.py
 │   │   ├── roster.py
+│   │   ├── team.py
+│   │   └── tournament.py
+│   ├── schemas/        # Pydantic request/response schemas (DTOs)
 │   │   ├── account.py
-│   │   └── player.py
+│   │   ├── league.py
+│   │   ├── league_pool.py
+│   │   ├── league_registration.py
+│   │   ├── player.py
+│   │   └── roster.py
 │   ├── services/       # Business logic layer
-│   │   ├── league_service.py
-│   │   ├── roster_service.py
 │   │   ├── account_service.py
-│   │   └── player_service.py
+│   │   ├── league_pool_service.py
+│   │   ├── league_registration_service.py
+│   │   ├── league_service.py
+│   │   ├── player_service.py
+│   │   └── roster_service.py
 │   ├── db/             # Database session & connection config
 │   │   ├── base.py
 │   │   └── session.py
@@ -81,26 +95,34 @@ csf-core/
 | Method   | Endpoint              | Description            |
 |----------|-----------------------|------------------------|
 | `GET`    | `/health`             | Health check           |
-| `POST`   | `/leagues/`           | Create a league        |
-| `GET`    | `/leagues/`           | List all leagues       |
-| `GET`    | `/leagues/{id}`       | Get a league by ID     |
-| `PATCH`  | `/leagues/{id}`       | Update a league        |
-| `DELETE` | `/leagues/{id}`       | Delete a league        |
-| `POST`   | `/rosters/`             | Create a roster          |
-| `GET`    | `/rosters/`             | List all rosters         |
-| `GET`    | `/rosters/{id}`         | Get a roster by ID       |
-| `PATCH`  | `/rosters/{id}`         | Update a roster          |
-| `DELETE` | `/rosters/{id}`         | Delete a roster          |
-| `POST`   | `/accounts/`            | Create an account          |
-| `GET`    | `/accounts/`            | List all accounts         |
-| `GET`    | `/accounts/{id}`        | Get an account by ID       |
-| `PATCH`  | `/accounts/{id}`        | Update an account          |
-| `DELETE` | `/accounts/{id}`        | Deactivate an account      |
-| `POST`   | `/players/`             | Create a player            |
-| `GET`    | `/players/`             | List players               |
-| `GET`    | `/players/{id}`         | Get player by ID           |
-| `PATCH`  | `/players/{id}`         | Update a player            |
-| `DELETE` | `/players/{id}`         | Delete a player            |
+| `POST`   | `/leagues/`                                 | Create a league                        |
+| `GET`    | `/leagues/`                                 | List all leagues                       |
+| `GET`    | `/leagues/{id}`                             | Get a league                           |
+| `PATCH`  | `/leagues/{id}`                             | Update a league                        |
+| `DELETE` | `/leagues/{id}`                             | Delete a league                        |
+| `POST`   | `/leagues/{id}/registrations`               | **Join a league** (Registers Account)  |
+| `GET`    | `/leagues/{id}/registrations`               | List registered users                  |
+| `DELETE` | `/leagues/{id}/registrations/{reg_id}`      | **Leave a league** (Drop out)          |
+| `POST`   | `/leagues/{id}/pools`                       | Create a pool subdivision              |
+| `GET`    | `/leagues/{id}/pools`                       | List pools within a league             |
+| `GET`    | `/leagues/{id}/pools/{pool_id}`             | Get a specific pool                    |
+| `PATCH`  | `/leagues/{id}/pools/{pool_id}`             | Update a pool                          |
+| `DELETE` | `/leagues/{id}/pools/{pool_id}`             | Delete a pool                          |
+| `POST`   | `/pools/{pool_id}/rosters/`                 | **Create a drafted Roster**            |
+| `GET`    | `/pools/{pool_id}/rosters/`                 | List all rosters in pool               |
+| `GET`    | `/pools/{pool_id}/rosters/{roster_id}`      | Get roster details                     |
+| `PATCH`  | `/pools/{pool_id}/rosters/{roster_id}`      | Update a roster                        |
+| `DELETE` | `/pools/{pool_id}/rosters/{roster_id}`      | Delete a roster                        |
+| `POST`   | `/accounts/`                                | Create an account                      |
+| `GET`    | `/accounts/`                                | List all accounts                      |
+| `GET`    | `/accounts/{id}`                            | Get account info                       |
+| `PATCH`  | `/accounts/{id}`                            | Update account                         |
+| `DELETE` | `/accounts/{id}`                            | Deactivate account                     |
+| `POST`   | `/players/`                                 | Create a pro player                    |
+| `GET`    | `/players/`                                 | List all pro players                   |
+| `GET`    | `/players/{id}`                             | Get pro player timeline                |
+| `PATCH`  | `/players/{id}`                             | Update a pro player                    |
+| `DELETE` | `/players/{id}`                             | Delete a pro player                    |
 
 ---
 

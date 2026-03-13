@@ -26,6 +26,8 @@ from app.models.tournament import Tournament  # noqa
 from app.models.match import Match  # noqa
 from app.models.map import Map  # noqa
 from app.models.game_stats import GameStats  # noqa
+from app.models.league_pool import LeaguePool  # noqa
+from app.models.league_registration import LeagueRegistration  # noqa
 from app.config import settings
 
 # Point Alembic at our model metadata (the registry of all tables)
