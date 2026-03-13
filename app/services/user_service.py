@@ -23,6 +23,11 @@ def get_user_by_google_id(db: Session, google_id: str) -> User | None:
     return db.query(User).filter(User.google_id == google_id).first()
 
 
+def get_user_by_email(db: Session, email: str) -> User | None:
+    """Look up a user by their email address."""
+    return db.query(User).filter(User.email == email).first()
+
+
 def get_users(db: Session, skip: int = 0, limit: int = 20) -> list[User]:
     return db.query(User).offset(skip).limit(limit).all()
 

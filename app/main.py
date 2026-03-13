@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
-from app.api import leagues, users, teams
+from app.api import leagues, users, rosters
+from app.middleware import setup_middleware
 
 app = FastAPI(
     title="CSF Core",
@@ -8,9 +9,11 @@ app = FastAPI(
     version="0.1.0",
 )
 
+setup_middleware(app)
+
 app.include_router(leagues.router)
 app.include_router(users.router)
-app.include_router(teams.router)
+app.include_router(rosters.router)
 
 
 @app.get("/health")

@@ -25,19 +25,19 @@ csf-core/
 ├── app/
 │   ├── api/            # FastAPI route handlers (controllers)
 │   │   ├── leagues.py
-│   │   ├── teams.py
+│   │   ├── rosters.py
 │   │   └── users.py
 │   ├── models/         # SQLAlchemy ORM models
 │   │   ├── league.py
-│   │   ├── team.py
+│   │   ├── roster.py
 │   │   └── user.py
 │   ├── schemas/        # Pydantic request/response schemas (DTOs)
 │   │   ├── league.py
-│   │   ├── team.py
+│   │   ├── roster.py
 │   │   └── user.py
 │   ├── services/       # Business logic layer
 │   │   ├── league_service.py
-│   │   ├── team_service.py
+│   │   ├── roster_service.py
 │   │   └── user_service.py
 │   ├── db/             # Database session & connection config
 │   │   ├── base.py
@@ -48,7 +48,7 @@ csf-core/
 ├── tests/              # Test suite
 │   ├── conftest.py     # Test fixtures & DB setup
 │   ├── test_leagues.py
-│   ├── test_teams.py
+│   ├── test_rosters.py
 │   └── test_users.py
 ├── requirements.txt
 └── README.md
@@ -66,11 +66,11 @@ csf-core/
 | `GET`    | `/leagues/{id}`       | Get a league by ID     |
 | `PATCH`  | `/leagues/{id}`       | Update a league        |
 | `DELETE` | `/leagues/{id}`       | Delete a league        |
-| `POST`   | `/teams/`             | Create a team          |
-| `GET`    | `/teams/`             | List all teams         |
-| `GET`    | `/teams/{id}`         | Get a team by ID       |
-| `PATCH`  | `/teams/{id}`         | Update a team          |
-| `DELETE` | `/teams/{id}`         | Delete a team          |
+| `POST`   | `/rosters/`             | Create a roster          |
+| `GET`    | `/rosters/`             | List all rosters         |
+| `GET`    | `/rosters/{id}`         | Get a roster by ID       |
+| `PATCH`  | `/rosters/{id}`         | Update a roster          |
+| `DELETE` | `/rosters/{id}`         | Delete a roster          |
 | `POST`   | `/users/`            | Create a user          |
 | `GET`    | `/users/`            | List all users         |
 | `GET`    | `/users/{id}`        | Get a user by ID       |

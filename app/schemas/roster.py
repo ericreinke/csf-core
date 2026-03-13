@@ -4,21 +4,21 @@ from uuid import UUID
 from pydantic import BaseModel
 
 
-class TeamCreate(BaseModel):
-    """Request body for creating a team."""
+class RosterCreate(BaseModel):
+    """Request body for creating a roster."""
     name: str
     tag: str | None = None
     league_id: UUID
     owner_id: UUID
 
 
-class TeamUpdate(BaseModel):
-    """Request body for updating a team. All fields optional — only provided fields are updated."""
+class RosterUpdate(BaseModel):
+    """Request body for updating a roster. All fields optional — only provided fields are updated."""
     name: str | None = None
     tag: str | None = None
 
 
-class TeamResponse(BaseModel):
+class RosterResponse(BaseModel):
     """Response body returned to the client. Mirrors the full DB model."""
     id: UUID
     name: str

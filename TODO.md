@@ -4,11 +4,11 @@
 - [x] League model + CRUD API
 - [x] User model + CRUD API (Google-only auth)
 - [x] Link League owner → User (ForeignKey)
-- [x] Team model + CRUD API
-- [ ] Player model + CRUD API (link to csf-scraper player data via steam_id)
+- [x] Roster model + CRUD API
+- [ ] Player model + CRUD API (link to csf-scraper player data via sroster_id)
 
 ## League Features
-- [ ] League join/leave flow (team registration)
+- [ ] League join/leave flow (roster registration)
 - [ ] League status transitions (OPEN → ACTIVE → COMPLETED)
 - [ ] League settings (roster size, scoring type, trade deadlines)
 
@@ -19,7 +19,7 @@
 - [ ] Draft state machine (PENDING → IN_PROGRESS → COMPLETED)
 
 ## Roster Management
-- [ ] Roster model (team ↔ player assignments)
+- [ ] Roster model (roster ↔ player assignments)
 - [ ] Add/drop players
 - [ ] Trade proposals and acceptance flow
 - [ ] Roster lock enforcement (during matches)
@@ -37,7 +37,7 @@
 - [ ] Environment-based config (dev/staging/prod)
 - [ ] Docker setup
 - [ ] CI/CD pipeline
-- [ ] Logging and error handling middleware
+- [x] Logging and error handling middleware
 
 ## Cleanup
 - [ ] Fix Pydantic deprecation warning (`class Config` → `model_config = ConfigDict(...)`)

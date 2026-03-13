@@ -9,8 +9,8 @@ from app.db.base import Base
 from app.models.league import generate_uuid7
 
 
-class Team(Base):
-    __tablename__ = "team"
+class Roster(Base):
+    __tablename__ = "roster"
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=generate_uuid7)
     name: Mapped[str] = mapped_column(String(100), nullable=False)

@@ -12,10 +12,14 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post("/", response_model=UserResponse, status_code=201)
 def create_user(user_data: UserCreate, db: Session = Depends(get_db)):
-    # Check for duplicate google_id or email
-    existing = user_service.get_user_by_google_id(db, user_data.google_id)
-    if existing:
+    # Check for duplicate google_id
+    if user_service.get_user_by_google_id(db, user_data.google_id):
         raise HTTPException(status_code=409, detail="User with this Google ID already exists")
+        
+    # Check for duplicate email
+    if user_service.get_user_by_email(db, user_data.email):
+        raise HTTPException(status_code=409, detail="User with this email already exists")
+        
     return user_service.create_user(db, user_data)
 
 
