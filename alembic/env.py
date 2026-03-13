@@ -20,6 +20,12 @@ from app.db.base import Base  # noqa
 from app.models.league import League  # noqa
 from app.models.account import Account  # noqa
 from app.models.roster import Roster  # noqa
+from app.models.team import Team  # noqa
+from app.models.player import Player  # noqa
+from app.models.tournament import Tournament  # noqa
+from app.models.match import Match  # noqa
+from app.models.map import Map  # noqa
+from app.models.game_stats import GameStats  # noqa
 from app.config import settings
 
 # Point Alembic at our model metadata (the registry of all tables)

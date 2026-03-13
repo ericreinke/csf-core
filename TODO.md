@@ -5,7 +5,7 @@
 - [x] Account model + CRUD API (Google-only auth)
 - [x] Link League owner → User (ForeignKey)
 - [x] Roster model + CRUD API
-- [ ] Player model + CRUD API (link to csf-scraper player data via sroster_id)
+- [x] Player model + CRUD API (link to csf-scraper player data via sroster_id)
 
 ## League Features
 - [ ] League join/leave flow (roster registration)

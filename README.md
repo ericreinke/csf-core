@@ -14,11 +14,22 @@ Core backend service for the **Counter-Strike Fantasy** application. Built with 
 | ORM         | SQLAlchemy              |
 | Migrations  | Alembic                 |
 | Testing     | pytest + httpx          |
-| Data Source | csf-scraper (demo parsing & stat ingestion) |
+| Data Source | csf-scraper (background worker orchestrating HLTV scraping & demo parsing) |
 
 ---
 
-## Project Structure
+## 🏛️ Architecture: The Shared Database Pattern
+
+**CSF Core** and **csf-scraper** do not use separate or isolated databases. They operate on a powerful **Shared Database Architecture** where they point to the exact same Postgres connection URL.
+
+- **`csf-core` is the Owner (Source of Truth):**
+  This FastAPI backend completely owns the database schema. It dictates the SQLAlchemy ORM definitions, defines constraints, and is the only app allowed to execute `alembic` database migrations.
+- **`csf-scraper` is the Worker:**
+  The scraper functions as an asynchronous data pipeline. It fetches HLTV matches, parses CS2 demos, and executes `INSERT / UPDATE` queries directly against the tables created by `csf-core`. It simply treats the database as an API it writes to.
+
+---
+
+## 📂 Project Structure
 
 ```
 csf-core/
@@ -26,19 +37,28 @@ csf-core/
 │   ├── api/            # FastAPI route handlers (controllers)
 │   │   ├── leagues.py
 │   │   ├── rosters.py
-│   │   └── accounts.py
-│   ├── models/         # SQLAlchemy ORM models
+│   │   ├── accounts.py
+│   │   └── players.py
+│   ├── models/         # SQLAlchemy ORM models (Source of Truth)
 │   │   ├── league.py
 │   │   ├── roster.py
-│   │   └── account.py
+│   │   ├── account.py
+│   │   ├── team.py
+│   │   ├── player.py
+│   │   ├── tournament.py
+│   │   ├── match.py
+│   │   ├── map.py
+│   │   └── game_stats.py
 │   ├── schemas/        # Pydantic request/response schemas (DTOs)
 │   │   ├── league.py
 │   │   ├── roster.py
-│   │   └── account.py
+│   │   ├── account.py
+│   │   └── player.py
 │   ├── services/       # Business logic layer
 │   │   ├── league_service.py
 │   │   ├── roster_service.py
-│   │   └── account_service.py
+│   │   ├── account_service.py
+│   │   └── player_service.py
 │   ├── db/             # Database session & connection config
 │   │   ├── base.py
 │   │   └── session.py
@@ -76,6 +96,11 @@ csf-core/
 | `GET`    | `/accounts/{id}`        | Get an account by ID       |
 | `PATCH`  | `/accounts/{id}`        | Update an account          |
 | `DELETE` | `/accounts/{id}`        | Deactivate an account      |
+| `POST`   | `/players/`             | Create a player            |
+| `GET`    | `/players/`             | List players               |
+| `GET`    | `/players/{id}`         | Get player by ID           |
+| `PATCH`  | `/players/{id}`         | Update a player            |
+| `DELETE` | `/players/{id}`         | Delete a player            |
 
 ---
 
