@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api import leagues, users, rosters
+from app.api import leagues, accounts, rosters
 from app.middleware import setup_middleware
 
 app = FastAPI(
@@ -12,7 +12,7 @@ app = FastAPI(
 setup_middleware(app)
 
 app.include_router(leagues.router)
-app.include_router(users.router)
+app.include_router(accounts.router)
 app.include_router(rosters.router)
 
 

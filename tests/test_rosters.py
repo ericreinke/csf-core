@@ -1,19 +1,19 @@
-from app.models.user import User
+from app.models.account import Account
 from app.models.league import League, generate_uuid7
 from app.models.roster import Roster
 
 
-def _create_test_user(db):
-    """Helper to create a user needed for league/roster ownership."""
-    user = User(
+def _create_test_account(db):
+    """Helper to create an account needed for league/roster ownership."""
+    account = Account(
         google_id="test-google-id-123",
         email="eric@test.com",
         display_name="Eric",
     )
-    db.add(user)
+    db.add(account)
     db.commit()
-    db.refresh(user)
-    return user
+    db.refresh(account)
+    return account
 
 
 def _create_test_league(db, owner_id):
@@ -29,32 +29,32 @@ def _create_test_league(db, owner_id):
 
 
 def test_create_roster(client, db):
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
     response = client.post("/rosters/", json={
         "name": "Roster Alpha",
         "tag": "ALPH",
         "league_id": str(league.id),
-        "owner_id": str(user.id),
+        "owner_id": str(account.id),
     })
     assert response.status_code == 201
     data = response.json()
     assert data["name"] == "Roster Alpha"
     assert data["tag"] == "ALPH"
     assert data["league_id"] == str(league.id)
-    assert data["owner_id"] == str(user.id)
+    assert data["owner_id"] == str(account.id)
     assert data["id"] is not None
 
 
 def test_create_roster_without_tag(client, db):
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
     response = client.post("/rosters/", json={
         "name": "Roster Beta",
         "league_id": str(league.id),
-        "owner_id": str(user.id),
+        "owner_id": str(account.id),
     })
     assert response.status_code == 201
     data = response.json()
@@ -63,13 +63,13 @@ def test_create_roster_without_tag(client, db):
 
 
 def test_get_roster(client, db):
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
     create_response = client.post("/rosters/", json={
         "name": "Roster Alpha",
         "league_id": str(league.id),
-        "owner_id": str(user.id),
+        "owner_id": str(account.id),
     })
     roster_id = create_response.json()["id"]
 
@@ -85,11 +85,11 @@ def test_get_roster_not_found(client):
 
 
 def test_list_rosters(client, db):
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
-    client.post("/rosters/", json={"name": "Roster A", "league_id": str(league.id), "owner_id": str(user.id)})
-    client.post("/rosters/", json={"name": "Roster B", "league_id": str(league.id), "owner_id": str(user.id)})
+    client.post("/rosters/", json={"name": "Roster A", "league_id": str(league.id), "owner_id": str(account.id)})
+    client.post("/rosters/", json={"name": "Roster B", "league_id": str(league.id), "owner_id": str(account.id)})
 
     response = client.get("/rosters/")
     assert response.status_code == 200
@@ -97,14 +97,14 @@ def test_list_rosters(client, db):
 
 
 def test_update_roster(client, db):
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
     create_response = client.post("/rosters/", json={
         "name": "Roster Alpha",
         "tag": "ALPH",
         "league_id": str(league.id),
-        "owner_id": str(user.id),
+        "owner_id": str(account.id),
     })
     roster_id = create_response.json()["id"]
 
@@ -117,19 +117,19 @@ def test_update_roster(client, db):
     assert response.json()["tag"] == "ALPU"
     # league and owner should be unchanged
     assert response.json()["league_id"] == str(league.id)
-    assert response.json()["owner_id"] == str(user.id)
+    assert response.json()["owner_id"] == str(account.id)
 
 
 def test_update_roster_partial(client, db):
     """Updating only name should not change tag."""
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
     create_response = client.post("/rosters/", json={
         "name": "Roster Alpha",
         "tag": "ALPH",
         "league_id": str(league.id),
-        "owner_id": str(user.id),
+        "owner_id": str(account.id),
     })
     roster_id = create_response.json()["id"]
 
@@ -146,13 +146,13 @@ def test_update_roster_not_found(client):
 
 
 def test_delete_roster(client, db):
-    user = _create_test_user(db)
-    league = _create_test_league(db, user.id)
+    account = _create_test_account(db)
+    league = _create_test_league(db, account.id)
 
     create_response = client.post("/rosters/", json={
         "name": "Roster Alpha",
         "league_id": str(league.id),
-        "owner_id": str(user.id),
+        "owner_id": str(account.id),
     })
     roster_id = create_response.json()["id"]
 

@@ -17,8 +17,8 @@ class Roster(Base):
     tag: Mapped[str | None] = mapped_column(String(10), nullable=True)
     league_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("league.id"), nullable=False)
     league: Mapped["League"] = relationship("League")
-    owner_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("user.id"), nullable=False)
-    owner: Mapped["User"] = relationship("User")
+    owner_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("account.id"), nullable=False)
+    owner: Mapped["Account"] = relationship("Account")
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), onupdate=func.now()

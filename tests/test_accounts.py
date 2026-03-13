@@ -1,5 +1,5 @@
-def test_create_user(client):
-    response = client.post("/users/", json={
+def test_create_account(client):
+    response = client.post("/accounts/", json={
         "google_id": "google-123",
         "email": "eric@gmail.com",
         "display_name": "Eric",
@@ -13,13 +13,13 @@ def test_create_user(client):
     assert data["id"] is not None
 
 
-def test_create_user_duplicate_google_id(client):
-    client.post("/users/", json={
+def test_create_account_duplicate_google_id(client):
+    client.post("/accounts/", json={
         "google_id": "google-123",
         "email": "eric@gmail.com",
         "display_name": "Eric",
     })
-    response = client.post("/users/", json={
+    response = client.post("/accounts/", json={
         "google_id": "google-123",
         "email": "other@gmail.com",
         "display_name": "Other",
@@ -27,43 +27,43 @@ def test_create_user_duplicate_google_id(client):
     assert response.status_code == 409
 
 
-def test_get_user(client):
-    create_response = client.post("/users/", json={
+def test_get_account(client):
+    create_response = client.post("/accounts/", json={
         "google_id": "google-123",
         "email": "eric@gmail.com",
         "display_name": "Eric",
     })
-    user_id = create_response.json()["id"]
+    account_id = create_response.json()["id"]
 
-    response = client.get(f"/users/{user_id}")
+    response = client.get(f"/accounts/{account_id}")
     assert response.status_code == 200
     assert response.json()["display_name"] == "Eric"
 
 
-def test_get_user_not_found(client):
+def test_get_account_not_found(client):
     fake_id = "00000000-0000-0000-0000-000000000000"
-    response = client.get(f"/users/{fake_id}")
+    response = client.get(f"/accounts/{fake_id}")
     assert response.status_code == 404
 
 
-def test_list_users(client):
-    client.post("/users/", json={"google_id": "g1", "email": "a@test.com", "display_name": "A"})
-    client.post("/users/", json={"google_id": "g2", "email": "b@test.com", "display_name": "B"})
+def test_list_accounts(client):
+    client.post("/accounts/", json={"google_id": "g1", "email": "a@test.com", "display_name": "A"})
+    client.post("/accounts/", json={"google_id": "g2", "email": "b@test.com", "display_name": "B"})
 
-    response = client.get("/users/")
+    response = client.get("/accounts/")
     assert response.status_code == 200
     assert len(response.json()) == 2
 
 
-def test_update_user(client):
-    create_response = client.post("/users/", json={
+def test_update_account(client):
+    create_response = client.post("/accounts/", json={
         "google_id": "google-123",
         "email": "eric@gmail.com",
         "display_name": "Eric",
     })
-    user_id = create_response.json()["id"]
+    account_id = create_response.json()["id"]
 
-    response = client.patch(f"/users/{user_id}", json={
+    response = client.patch(f"/accounts/{account_id}", json={
         "display_name": "Eric R",
     })
     assert response.status_code == 200
@@ -72,19 +72,19 @@ def test_update_user(client):
     assert response.json()["email"] == "eric@gmail.com"
 
 
-def test_deactivate_user(client):
-    create_response = client.post("/users/", json={
+def test_deactivate_account(client):
+    create_response = client.post("/accounts/", json={
         "google_id": "google-123",
         "email": "eric@gmail.com",
         "display_name": "Eric",
     })
-    user_id = create_response.json()["id"]
+    account_id = create_response.json()["id"]
 
     # Deactivate
-    response = client.delete(f"/users/{user_id}")
+    response = client.delete(f"/accounts/{account_id}")
     assert response.status_code == 204
 
-    # User still exists but is_active should be False
-    response = client.get(f"/users/{user_id}")
+    # Account still exists but is_active should be False
+    response = client.get(f"/accounts/{account_id}")
     assert response.status_code == 200
     assert response.json()["is_active"] is False

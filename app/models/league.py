@@ -32,8 +32,8 @@ class League(Base):
         Enum(LeagueStatus), nullable=False, default=LeagueStatus.OPEN
     )
     description: Mapped[str | None] = mapped_column(String(500), nullable=True)
-    owner_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("user.id"), nullable=False)
-    owner: Mapped["User"] = relationship("User")
+    owner_id: Mapped[uuid.UUID] = mapped_column(Uuid, ForeignKey("account.id"), nullable=False)
+    owner: Mapped["Account"] = relationship("Account")
     max_teams: Mapped[int] = mapped_column(nullable=False, default=8)
     start_time: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     league_length: Mapped[int | None] = mapped_column(Integer, nullable=True)

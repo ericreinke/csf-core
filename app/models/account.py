@@ -9,8 +9,8 @@ from app.db.base import Base
 from app.models.league import generate_uuid7
 
 
-class User(Base):
-    __tablename__ = "user"
+class Account(Base):
+    __tablename__ = "account"
 
     id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True, default=generate_uuid7)
     google_id: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)

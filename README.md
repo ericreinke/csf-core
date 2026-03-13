@@ -26,19 +26,19 @@ csf-core/
 │   ├── api/            # FastAPI route handlers (controllers)
 │   │   ├── leagues.py
 │   │   ├── rosters.py
-│   │   └── users.py
+│   │   └── accounts.py
 │   ├── models/         # SQLAlchemy ORM models
 │   │   ├── league.py
 │   │   ├── roster.py
-│   │   └── user.py
+│   │   └── account.py
 │   ├── schemas/        # Pydantic request/response schemas (DTOs)
 │   │   ├── league.py
 │   │   ├── roster.py
-│   │   └── user.py
+│   │   └── account.py
 │   ├── services/       # Business logic layer
 │   │   ├── league_service.py
 │   │   ├── roster_service.py
-│   │   └── user_service.py
+│   │   └── account_service.py
 │   ├── db/             # Database session & connection config
 │   │   ├── base.py
 │   │   └── session.py
@@ -49,7 +49,7 @@ csf-core/
 │   ├── conftest.py     # Test fixtures & DB setup
 │   ├── test_leagues.py
 │   ├── test_rosters.py
-│   └── test_users.py
+│   └── test_accounts.py
 ├── requirements.txt
 └── README.md
 ```
@@ -71,11 +71,11 @@ csf-core/
 | `GET`    | `/rosters/{id}`         | Get a roster by ID       |
 | `PATCH`  | `/rosters/{id}`         | Update a roster          |
 | `DELETE` | `/rosters/{id}`         | Delete a roster          |
-| `POST`   | `/users/`            | Create a user          |
-| `GET`    | `/users/`            | List all users         |
-| `GET`    | `/users/{id}`        | Get a user by ID       |
-| `PATCH`  | `/users/{id}`        | Update user profile    |
-| `DELETE` | `/users/{id}`        | Deactivate a user      |
+| `POST`   | `/accounts/`            | Create an account          |
+| `GET`    | `/accounts/`            | List all accounts         |
+| `GET`    | `/accounts/{id}`        | Get an account by ID       |
+| `PATCH`  | `/accounts/{id}`        | Update an account          |
+| `DELETE` | `/accounts/{id}`        | Deactivate an account      |
 
 ---
 
