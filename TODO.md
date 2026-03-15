@@ -12,11 +12,16 @@
 - [x] Roster model + CRUD API (Strictly bound to LeaguePool)
 
 ## Game Data (From csf-scraper)
-- [ ] Team model + GET API (Read-only for frontend)
-- [ ] Tournament model + GET API (Read-only for frontend)
-- [ ] Match model + GET API (Read-only for frontend)
-- [ ] Map model + GET API (Read-only for frontend)
-- [ ] GameStats model + GET API (Read-only for frontend)
+- [x] Team model + full CRUD API (GET public, writes admin-only)
+- [x] Tournament model + full CRUD API (GET public, writes admin-only)
+- [x] Match model + full CRUD API (GET public, writes admin-only)
+- [x] Map model + full CRUD API (GET public, writes admin-only)
+- [x] GameStats model + full CRUD API (GET public + player/map filters, writes admin-only)
+
+## Admin / Auth
+- [ ] Google OAuth authentication flow
+- [ ] JWT token generation & validation
+- [ ] Superuser role check on game data write endpoints (POST/PATCH/DELETE)
 
 ## League Features
 - [ ] Automated LeaguePool assignment mapping (Group users by 10)
@@ -42,13 +47,11 @@
 - [ ] Standings/leaderboard
 
 ## Infrastructure
-- [ ] Google OAuth authentication flow
-- [ ] JWT token generation & validation
+- [x] Logging and error handling middleware
 - [ ] CORS configuration
 - [ ] Environment-based config (dev/staging/prod)
 - [ ] Docker setup
 - [ ] CI/CD pipeline
-- [x] Logging and error handling middleware
 
 ## Cleanup
 - [ ] Fix Pydantic deprecation warning (`class Config` → `model_config = ConfigDict(...)`)

@@ -6,7 +6,6 @@ from fastapi.testclient import TestClient
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
-
 # Use a separate test database so tests don't touch your real data
 TEST_DATABASE_URL = "postgresql://postgres:postgres@localhost:5432/csf_core_test"
 
@@ -51,3 +50,4 @@ def client():
     app.dependency_overrides[get_db] = override_get_db
     yield TestClient(app)
     app.dependency_overrides.clear()
+
