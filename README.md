@@ -41,17 +41,17 @@ The backend enforces a strict logical pipeline to prevent empty teams and manage
 csf-core/
 ├── app/
 │   ├── api/            # FastAPI route handlers (controllers)
-│   │   ├── accounts.py
-│   │   ├── game_stats.py
-│   │   ├── league_pools.py
-│   │   ├── league_registrations.py
-│   │   ├── leagues.py
-│   │   ├── maps.py
-│   │   ├── matches.py
-│   │   ├── players.py
-│   │   ├── rosters.py
-│   │   ├── teams.py
-│   │   └── tournaments.py
+│   │   ├── accounts_router.py
+│   │   ├── game_stats_router.py
+│   │   ├── league_pools_router.py
+│   │   ├── league_registrations_router.py
+│   │   ├── leagues_router.py
+│   │   ├── maps_router.py
+│   │   ├── matches_router.py
+│   │   ├── players_router.py
+│   │   ├── rosters_router.py
+│   │   ├── teams_router.py
+│   │   └── tournaments_router.py
 │   ├── models/         # SQLAlchemy ORM models (Source of Truth)
 │   │   ├── account.py
 │   │   ├── game_stats.py
