@@ -13,6 +13,7 @@ from app.api import (
     maps,
     game_stats,
 )
+from app.api.rosters import roster_player_router
 from app.middleware import setup_middleware
 
 app = FastAPI(
@@ -29,6 +30,7 @@ app.include_router(rosters.router)
 app.include_router(players.router)
 app.include_router(league_pools.router)
 app.include_router(league_registrations.router)
+app.include_router(roster_player_router)
 
 # Game data (populated by csf-scraper; reads public, writes admin-only)
 app.include_router(teams.router)

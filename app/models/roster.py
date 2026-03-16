@@ -27,3 +27,7 @@ class Roster(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime, server_default=func.now(), onupdate=func.now()
     )
+
+    players: Mapped[list["RosterPlayer"]] = relationship(
+        "RosterPlayer", back_populates="roster", cascade="all, delete-orphan"
+    )

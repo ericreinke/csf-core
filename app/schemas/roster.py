@@ -3,6 +3,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
+from app.schemas.roster_player import RosterPlayerResponse
+
 
 class RosterBase(BaseModel):
     name: str = Field(..., min_length=3, max_length=100)
@@ -29,5 +31,6 @@ class RosterResponse(RosterBase):
     owner_id: UUID
     created_at: datetime
     updated_at: datetime
+    players: list[RosterPlayerResponse] = []
 
     model_config = {"from_attributes": True}

@@ -35,8 +35,8 @@
 - [ ] Draft state machine (PENDING → IN_PROGRESS → COMPLETED)
 
 ## Roster Management
-- [ ] `RosterPlayer` model (Join table: Roster ↔ Player assignments)
-- [ ] Add/drop free agent players
+- [x] `RosterPlayer` model (Join table: Roster ↔ Player assignments)
+- [x] Add/drop players (draft onto roster, drop from roster)
 - [ ] Trade proposals and acceptance flow
 - [ ] Roster lock enforcement (during active CS tournament matches)
 
