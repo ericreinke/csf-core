@@ -82,8 +82,10 @@ csf-core/
 │   │   ├── account_service.py
 │   │   ├── game_stats_service.py
 │   │   ├── league_pool_service.py
+│   │   ├── league_lifecycle_service.py
 │   │   ├── league_registration_service.py
 │   │   ├── league_service.py
+│   │   ├── lifecycle_poller.py
 │   │   ├── map_service.py
 │   │   ├── match_service.py
 │   │   ├── player_service.py
@@ -103,6 +105,7 @@ csf-core/
 │   ├── conftest.py     # Test fixtures & DB setup
 │   ├── test_accounts.py
 │   ├── test_game_stats.py
+│   ├── test_league_lifecycle.py
 │   ├── test_league_pools.py
 │   ├── test_league_registrations.py
 │   ├── test_leagues.py
@@ -129,6 +132,9 @@ csf-core/
 | `GET`    | `/leagues/{id}`                             | Get a league                           |
 | `PATCH`  | `/leagues/{id}`                             | Update a league                        |
 | `DELETE` | `/leagues/{id}`                             | Delete a league                        |
+| `POST`   | `/leagues/{id}/close-registration`          | **Close registration** (auto-pools)    |
+| `POST`   | `/leagues/{id}/assign-pools`                | Manually assign unassigned to pools    |
+| `POST`   | `/leagues/{id}/start-draft`                 | **Start the draft phase**              |
 | `POST`   | `/leagues/{id}/registrations`               | **Join a league** (Registers Account)  |
 | `GET`    | `/leagues/{id}/registrations`               | List registered users                  |
 | `DELETE` | `/leagues/{id}/registrations/{reg_id}`      | **Leave a league** (Drop out)          |

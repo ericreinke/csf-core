@@ -24,9 +24,12 @@
 - [ ] Superuser role check on game data write endpoints (POST/PATCH/DELETE)
 
 ## League Features
-- [ ] Automated LeaguePool assignment mapping (Group users by 10)
-- [ ] League status transitions (OPEN → ACTIVE → COMPLETED)
-- [ ] League settings (roster size, scoring type, trade deadlines)
+- [x] Automated LeaguePool assignment (configurable pool_size per league, triggered on registration close)
+- [x] League status transitions (OPEN → ACTIVE → draft phase via `league_lifecycle_service`)
+- [x] Time-based polling loop (`lifecycle_poller.py`) — auto-fires transitions on deadline
+- [x] Manual admin override endpoints (close-registration, assign-pools, start-draft)
+- [ ] League settings (scoring type, trade deadlines)
+- [ ] Full draft state machine (PENDING → IN_PROGRESS → COMPLETED, pick order, etc.)
 
 ## Drafting
 - [ ] Draft model (linked to league)

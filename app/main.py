@@ -1,3 +1,6 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 
 from app.api import (
@@ -15,11 +18,21 @@ from app.api import (
 )
 from app.api.rosters_router import roster_player_router
 from app.middleware import setup_middleware
+from app.services.lifecycle_poller import poll_league_transitions
+from app.db.session import SessionLocal
+
+@asynccontextmanager
+async def lifespan(app):
+    """Start background tasks on startup, clean up on shutdown."""
+    asyncio.create_task(poll_league_transitions(SessionLocal))
+    yield
+
 
 app = FastAPI(
     title="CSF Core",
     description="Backend API for Counter-Strike Fantasy league management",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 setup_middleware(app)

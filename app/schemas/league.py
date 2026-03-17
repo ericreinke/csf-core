@@ -11,7 +11,10 @@ class LeagueCreate(BaseModel):
     name: str
     description: str | None = None
     owner_id: UUID
+    pool_size: int = 10
     start_time: datetime | None = None
+    registration_deadline: datetime | None = None
+    draft_start_time: datetime | None = None
     league_length: int | None = None
     prize_description: str | None = None
 
@@ -21,7 +24,10 @@ class LeagueUpdate(BaseModel):
     name: str | None = None
     description: str | None = None
     status: LeagueStatus | None = None
+    pool_size: int | None = None
     start_time: datetime | None = None
+    registration_deadline: datetime | None = None
+    draft_start_time: datetime | None = None
     league_length: int | None = None
     prize_description: str | None = None
 
@@ -33,10 +39,14 @@ class LeagueResponse(BaseModel):
     status: LeagueStatus
     description: str | None
     owner_id: UUID
+    pool_size: int
     start_time: datetime | None
+    registration_deadline: datetime | None
+    draft_start_time: datetime | None
     league_length: int | None
     prize_description: str | None
     created_at: datetime
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+
